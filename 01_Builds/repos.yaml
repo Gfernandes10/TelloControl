@@ -3,4 +3,8 @@ repositories:
     type: git
     url: https://github.com/TIERS/tello-ros2-gazebo.git
     version: master
+  ros_utils:
+    type: git
+    url: https://github.com/Gfernandes10/ROSUtilities.git
+    version: main
 

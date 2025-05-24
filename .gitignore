@@ -5,6 +5,7 @@ log/
 
 # Ignore external packages brought in via vcs (edit as needed)
 src/tello_ros2_gazebo/
+src/ros_utils/
 
 # ROS2 and Gazebo cache files
 *.pyc
