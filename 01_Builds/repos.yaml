@@ -7,4 +7,8 @@ repositories:
     type: git
     url: https://github.com/Gfernandes10/ROSUtilities.git
     version: main
+  tello_interface:
+    type: git
+    url: https://github.com/Gfernandes10/tello_interface.git
+    version: master
 
