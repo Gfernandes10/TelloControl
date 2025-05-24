@@ -11,14 +11,7 @@ Run the installation script (only once, or whenever setting up on a new machine)
 bash install.sh
 ```
 
-### 2. Download the required ROS2 packages
-External packages (such as tello_ros2_gazebo) are managed via the `repos.yaml` file. To clone all required packages, run:
-
-```bash
-vcs import src < 01_Builds/repos.yaml
-```
-
-### 3. Build the workspace
+### 2. Build the workspace
 Use the build script to compile all packages and set up the environment:
 
 ```bash

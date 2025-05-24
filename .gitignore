@@ -1,4 +1,4 @@
-# Ignore build, install, and log directories (colcon/ROS2 standard)
+ssh -T git@github.com# Ignore build, install, and log directories (colcon/ROS2 standard)
 build/
 install/
 log/
