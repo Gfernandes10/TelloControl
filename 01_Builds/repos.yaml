@@ -1,0 +1,6 @@
+repositories:
+  tello_ros2_gazebo:
+    type: git
+    url: https://github.com/TIERS/tello-ros2-gazebo.git
+    version: master
+

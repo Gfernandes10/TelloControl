@@ -1,0 +1,27 @@
+# Ignore build, install, and log directories (colcon/ROS2 standard)
+build/
+install/
+log/
+
+# Ignore external packages brought in via vcs (edit as needed)
+src/tello_ros2_gazebo/
+
+# ROS2 and Gazebo cache files
+*.pyc
+__pycache__/
+*.swp
+*.swo
+
+# VSCode and editor files
+.vscode/
+*.code-workspace
+*.idea/
+.DS_Store
+
+# Colcon/ROS2 metadata
+.colcon*
+COLCON_IGNORE
+
+# Misc
+*.bak
+*~
