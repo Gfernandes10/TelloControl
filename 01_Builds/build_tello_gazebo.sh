@@ -9,6 +9,7 @@ source /opt/ros/foxy/setup.bash
 cd "$(dirname "$0")/.."
 
 # Import all repositories listed in repos.yaml
+mkdir -p src
 vcs import src < 01_Builds/repos.yaml
 
 # Instala dependências do sistema dos pacotes
