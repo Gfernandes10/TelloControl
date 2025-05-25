@@ -22,5 +22,8 @@ source install/setup.bash
 # Configurations
 export GAZEBO_MODEL_PATH=${PWD}/install/tello_gazebo/share/tello_gazebo/models
 source /usr/share/gazebo/setup.sh
+if ! grep -q 'export MY_WORKSPACE_NAME="TelloControl"' ~/.bashrc; then
+  echo 'export MY_WORKSPACE_NAME="TelloControl"' >> ~/.bashrc
+fi
 
 echo "Build complete! Source the workspace with: source install/setup.bash"

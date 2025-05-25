@@ -68,6 +68,7 @@ sudo apt install -y gazebo11 libgazebo11 libgazebo11-dev ros-foxy-gazebo-ros-pkg
 sudo apt install -y libasio-dev
 sudo apt install -y ros-foxy-cv-bridge ros-foxy-camera-calibration-parsers 
 sudo apt install -y libignition-rendering3
+sudo apt install ros-${ROS_DISTRO}-plotjuggler ros-${ROS_DISTRO}-plotjuggler-ros
 pip3 install transformations
 
 # End of script
