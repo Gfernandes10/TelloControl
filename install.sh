@@ -69,8 +69,10 @@ sudo apt install -y libasio-dev
 sudo apt install -y ros-foxy-cv-bridge ros-foxy-camera-calibration-parsers 
 sudo apt install -y libignition-rendering3
 sudo apt install -y ros-foxy-plotjuggler ros-foxy-plotjuggler-ros
+sudo apt install -y ros-foxy-tf-transformations
+sudo apt install -y ros-foxy-cv-bridge python3-opencv
 pip3 install transformations
-
+sudo pip3 install transforms3d
 # End of script
 
 echo "ROS2 and all general development dependencies are installed! Add any extra dependencies to this script as needed. Open a new terminal to use ROS2."
