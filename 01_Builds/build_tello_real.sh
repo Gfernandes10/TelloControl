@@ -10,7 +10,7 @@ cd "$(dirname "$0")/.."
 
 # Import all repositories listed in repos.yaml
 mkdir -p src
-vcs import src < 01_Builds/repos_gazebo.yaml
+vcs import src < 01_Builds/repos_real.yaml
 
 # Instala dependências do sistema dos pacotes
 rosdep install --from-paths src --ignore-src -r -y

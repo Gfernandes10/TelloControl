@@ -41,6 +41,10 @@ else
     fi
 fi
 
+# RViz2 in ROS2 Foxy seems bugged to render correctly cylinders, this command is a workaround
+echo 'export LC_NUMERIC="en_US.UTF-8"' >>~/.bashrc
+
+
 # Install general development dependencies
 # Add any additional dependencies your packages require below
 sudo apt update
@@ -71,6 +75,7 @@ sudo apt install -y libignition-rendering3
 sudo apt install -y ros-foxy-plotjuggler ros-foxy-plotjuggler-ros
 sudo apt install -y ros-foxy-tf-transformations
 sudo apt install -y ros-foxy-cv-bridge python3-opencv
+sudo apt install -y ros-foxy-xacro ros-foxy-joint-state-publisher
 pip3 install transformations
 sudo pip3 install transforms3d
 # End of script

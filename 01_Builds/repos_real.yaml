@@ -1,0 +1,28 @@
+repositories:
+  tello_ros2_gazebo:
+    type: git
+    url: https://github.com/TIERS/tello-ros2-gazebo.git
+    version: master
+  ros_utils:
+    type: git
+    url: https://github.com/Gfernandes10/ROSUtilities.git
+    version: main
+  tello_interface:
+    type: git
+    url: https://github.com/Gfernandes10/tello_interface.git
+    version: master
+  dji_tello_msgs:
+    type: git
+    url: https://github.com/Gfernandes10/dji_tello_msgs.git
+    version: master
+  dji_tello_driver:
+    type: git
+    url: https://github.com/Gfernandes10/dji_tello_driver.git
+    version: master
+  localization_pkg:
+    type: git
+    url: https://github.com/Gfernandes10/localization_pkg.git
+    version: master
+
+
+
