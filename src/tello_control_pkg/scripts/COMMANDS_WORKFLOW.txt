@@ -1,0 +1,85 @@
+Tello Control - Commands Workflow
+================================
+
+0) Environment
+--------------
+source /opt/ros/foxy/setup.bash
+source install/setup.bash
+cd /home/gabriel/TelloControl
+
+1) Robust LQI tuning (synthesis only)
+-------------------------------------
+python3 src/tello_control_pkg/scripts/tune_lqi_robust.py \
+  --config src/tello_control_pkg/config/lqi_tuning_near_zero_ov.yaml
+
+Obs: por padrão o tune já executa validação de malha fechada.
+Para desabilitar a validação no tune, use no YAML:
+  validation:
+    run_after_tuning: false
+
+Output (default from config):
+- <output_dir>/lqi_tuned.yaml
+- <output_dir>/lqi_runtime_ros.yaml (ROS-ready params YAML)
+- <output_dir>/summary.json
+- <output_dir>/summary.txt
+
+Optional (in tuning YAML -> output section):
+- ros_runtime_yaml: custom path for ROS runtime YAML
+- ros_runtime_base_yaml: existing ROS params YAML used as base/template
+- ros_runtime_node_name: node key (default /tello_control_node)
+
+2) Robust LQI validation (stability + simulation)
+-------------------------------------------------
+Option A: validate using gain from lqi_tuned.yaml
+python3 src/tello_control_pkg/scripts/validate_lqi_robust.py \
+  --config src/tello_control_pkg/config/lqi_tuning_near_zero_ov.yaml \
+  --tuned-yaml src/tello_control_pkg/experiments_lqi/robust_near_zero_ov/lqi_tuned.yaml
+
+Option B: validate gain manually set in config (controller.k_runtime_row_major or controller.k)
+python3 src/tello_control_pkg/scripts/validate_lqi_robust.py \
+  --config src/tello_control_pkg/config/lqi_tuning_near_zero_ov.yaml
+
+Optional output override:
+python3 src/tello_control_pkg/scripts/validate_lqi_robust.py \
+  --config src/tello_control_pkg/config/lqi_tuning_near_zero_ov.yaml \
+  --tuned-yaml src/tello_control_pkg/experiments_lqi/robust_near_zero_ov/lqi_tuned.yaml \
+  --out-dir src/tello_control_pkg/experiments_lqi/validation_run_01
+
+Validation output:
+- <output_dir>/lqi_validation.yaml
+- <output_dir>/validation_summary.json
+- <output_dir>/validation_summary.txt
+- <output_dir>/plots/*.png (if enabled)
+- <output_dir>/csv/*.csv (if enabled)
+
+3) Plant simulation (open-loop)
+-------------------------------
+python3 src/tello_control_pkg/scripts/simulate_drone_plant.py \
+  --config src/tello_control_pkg/config/plant_model_example.yaml
+
+4) Plant identification from experiments
+----------------------------------------
+python3 src/tello_control_pkg/scripts/identify_drone_plant.py \
+  --root src/tello_control_pkg/experiments_ident/ident_gazebo \
+  --out-dir src/tello_control_pkg/experiments_ident/ident_gazebo
+
+5) Control + localization latency analysis from CSV logs
+--------------------------------------------------------
+Option A: analyze latest log in csvLogs/
+python3 src/tello_control_pkg/scripts/analyze_control_latency.py
+
+Option B: analyze a specific log folder
+python3 src/tello_control_pkg/scripts/analyze_control_latency.py \
+  --log-dir csvLogs/20260301_1626
+
+Useful options:
+- --manual-window 0.5   (ignore +/- window around manual commands)
+- --max-lag 2.0         (search range for cross-correlation lag)
+- --save-json <path>    (custom report path)
+
+Output (default):
+- <log_dir>/tello_control_pkg/latency_report.json
+
+
+# State order:
+# [ex, evx, ey, evy, ez, evz, eyaw, evyaw, iex, iey, iez, ieyaw]

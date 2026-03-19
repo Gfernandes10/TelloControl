@@ -1,0 +1,27 @@
+Robust LQI tuning summary
+config: /home/gabriel/TelloControl/src/tello_control_pkg/config/lqi_tunning_real.yaml
+out_dir: /home/gabriel/TelloControl/src/tello_control_pkg/experiments_lqi/lqi_tuning_real
+
+solver_status: optimal
+solver_objective: 4.486210e-01
+solver: CLARABEL
+verbose: True
+alpha_enabled: False
+alpha: 0.000000
+damping_ratio_enabled: True
+zeta_min: 0.85
+input_saturation_lmi_enabled: False
+u_limits_lmi: disabled
+vertices: 256
+
+validation_run_after_tuning: True
+
+tuned_yaml: /home/gabriel/TelloControl/src/tello_control_pkg/experiments_lqi/lqi_tuning_real/lqi_tuned.yaml
+ros_runtime_yaml: /home/gabriel/TelloControl/src/tello_control_pkg/config/lqi_runtime_real.yaml
+summary_json: /home/gabriel/TelloControl/src/tello_control_pkg/experiments_lqi/lqi_tuning_real/summary.json
+
+stability:
+  stable_all_continuous: True
+  unstable_vertices_continuous: 0
+  worst_max_real_eig: -0.057196
+  worst_max_abs_eig_i_plus_a_dt: 0.998856

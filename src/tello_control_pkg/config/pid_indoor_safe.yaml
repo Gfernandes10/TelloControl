@@ -1,0 +1,40 @@
+/tello_control_node:
+  ros__parameters:
+    controller_type: "pid"
+    pid.kp_xy: 0.20
+    pid.ki_xy: 0.1
+    pid.kd_xy: 0.1
+    # pid.kp_xy: 0.20
+    # pid.ki_xy: 0.1
+    # pid.kd_xy: 0.1
+
+    # pid.kp_z: 0.7
+    # pid.ki_z: 0.19
+    # pid.kd_z: 0.03
+    
+    pid.kp_z: 0.7
+    pid.ki_z: 0.19
+    pid.kd_z: 0.0
+
+
+    pid.kp_yaw: 0.45
+    pid.ki_yaw: 0.04
+    pid.kd_yaw: 0.08
+
+    # pid.kp_yaw: 0.0
+    # pid.ki_yaw: 0.0
+    # pid.kd_yaw: 0.00
+
+    pid.int_xy_limit: 0.25
+    pid.int_z_limit: 0.25
+    pid.int_yaw_limit: 0.10
+
+    pid.cmd_xy_limit: 0.25
+    pid.cmd_z_limit: 0.30
+    pid.cmd_yaw_limit: 0.35
+
+    yaw_command_sign: -1.0
+    transform_world_xy_to_body: true
+    xy_command_sign_x: 1.0
+    xy_command_sign_y: -1.0
+    xy_command_swap: false

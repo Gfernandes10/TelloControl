@@ -1,0 +1,24 @@
+Drone plant identification summary
+root: /home/gabriel/TelloControl/src/tello_control_pkg/experiments_ident/ident_gazebo
+
+Estimated gammas:
+  gamma1: +16.22805133
+  gamma2: -2.02090065
+  gamma3: +15.78319512
+  gamma4: -1.96433454
+  gamma5: +6.50776842
+  gamma6: -1.54417389
+  gamma7: +6.12827164
+  gamma8: -1.93954844
+
+Fit stats:
+  rmse_xy_accel: 0.2165066111248984
+  n_samples_xy: 17702
+  xy_identification_frame: body
+  rmse_z_accel: 2.0067767772470146
+  n_samples_z: 6947
+  rmse_yaw_accel: 0.13414473840190402
+  n_samples_yaw: 4056
+
+identified_gammas.yaml: /home/gabriel/TelloControl/src/tello_control_pkg/experiments_ident/ident_gazebo/identified_gammas.yaml
+plots dir: /home/gabriel/TelloControl/src/tello_control_pkg/experiments_ident/ident_gazebo/plots

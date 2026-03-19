@@ -1,0 +1,85 @@
+model:
+  # Real-drone identified model
+  source_yaml: ../experiments_ident/ident_real/identified_gammas.yaml
+  uncertainty_pct: 0.10
+
+controller:
+  # Runtime law: u = control_sign * K_runtime * x_aug
+  control_sign: -1.0
+
+  # Saturation of mapped command v = [vx_cmd, vy_cmd, vz_cmd, wyaw_cmd]
+  v_limits: [0.6, 0.6, 0.6, 0.6]
+
+  # Integral anti-windup bounds for [iex, iey, iez, ieyaw]
+  integral_limits: [0.01, 0.01, 0.01, 0.01]
+
+  # State order:
+  # [ex, evx, ey, evy, ez, evz, eyaw, evyaw, iex, iey, iez, ieyaw]
+  # q_diag: [0.02, 0.01, 0.02, 0.01, 0.000000003, 0.000000015, 0.02, 0.01, 1.0, 1.0, 0.0001, 1.0]
+  q_diag: [0.02, 0.01, 0.02, 0.01, 0.002, 0.001, 0.02, 0.01, 1.0, 1.0, 1.0, 1.0]
+
+  # Input order [ux, uy, uz, uyaw]
+  r_diag: [100.0, 100.0, 100.0, 100.0]
+
+synthesis:
+  solver: CLARABEL
+  solver_eps: 1.0e-4
+  solver_max_iters: 25000
+  verbose: true
+  lmi_eps: 1.0e-4
+  clarabel_options:
+    max_iter: 30000
+    tol_gap_abs: 1.0e-3
+    tol_gap_rel: 1.0e-3
+    tol_feas: 1.0e-3
+    tol_infeas_abs: 1.0e-3
+    tol_infeas_rel: 1.0e-3
+    equilibrate_enable: true
+
+  
+
+  pole_region:
+    enable_alpha: false
+    alpha: 0.0
+    enable_damping_ratio: true
+    zeta_min: 0.85
+
+  input_saturation_lmi:
+    enable: false
+    u_limits: [0.5, 0.5, 0.3, 0.5]
+
+  objective_w2_weight: 500.0
+
+simulation:
+  dt: 0.02
+  duration: 20.0
+  settling_band: 0.02
+  scenarios:
+    - name: step_x
+      axis: x
+      amplitude: 0.2
+      step_time: 0.5
+    - name: step_y
+      axis: y
+      amplitude: 0.2
+      step_time: 0.5
+    - name: step_z
+      axis: z
+      amplitude: 0.2
+      step_time: 0.5
+    - name: step_yaw
+      axis: yaw
+      amplitude: 10.0
+      unit: deg
+      step_time: 0.5
+
+validation:
+  run_after_tuning: true
+  simulate_worst_vertex: true
+
+output:
+  dir: ../experiments_lqi/lqi_tuning_real
+  save_plots: true
+  save_csv: true
+  ros_runtime_yaml: ../config/lqi_runtime_real.yaml
+  ros_runtime_node_name: /tello_control_node

@@ -1,0 +1,62 @@
+# Example config for simulate_drone_plant.py
+# Continuous-time model:
+#   q_ddot = Lambda(psi) q_dot + Gamma(psi) v
+
+model:
+  gamma1: 3.75
+  gamma2: 1.10
+  gamma3: 3.75
+  gamma4: 1.10
+  gamma5: 2.68
+  gamma6: 0.75
+  gamma7: 1.42
+  gamma8: 2.06
+
+simulation:
+  dt: 0.2
+  duration: 40.0
+  # state: use current yaw state as psi in Lambda/Gamma
+  # fixed: use psi_fixed value (useful for identification with psi=0)
+  psi_source: fixed
+  psi_fixed: 0.0
+  wrap_yaw: true
+
+initial_state:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+  yaw: 0.0
+  vx: 0.0
+  vy: 0.0
+  vz: 0.0
+  wyaw: 0.0
+
+input:
+  # Modes: constant | excitation | sequential_excitation | csv
+  mode: sequential_excitation
+
+  # Apply excitation one axis at a time (x -> y -> z -> yaw)
+  sequential_axes: [x, y, z, yaw]
+  segment_duration: 10.0
+  repeat: false
+  phase_reset: true
+
+  # Identification excitation signal:
+  # v_d(t) = (0.1/4.5) * [ 3*sin(0.2*pi*t) + sin(0.6*pi*t) + 0.5*sin(pi*t) ]
+  excitation:
+    scale: 0.022222222222222223
+    coeffs: [3.0, 1.0, 0.5]
+    omega_pi: [0.2, 0.6, 1.0]
+
+  # Used only when mode=constant
+  constant: [0.0, 0.0, 0.0, 0.0]
+
+  # Used only when mode=csv
+  # csv_path: "commands.csv"
+  # time_column: "t"
+  # command_columns: ["cmd_vx", "cmd_vy", "cmd_vz", "cmd_wyaw"]
+  # hold_last: true
+
+output:
+  enabled: true
+  csv_path: "../../../experiments/plant_sim/plant_response_example.csv"

@@ -4,8 +4,9 @@ install/
 log/
 
 # Ignore external packages brought in via vcs (edit as needed)
-src/
+# src/
 csvLogs/
+bag*/
 
 
 # ROS2 and Gazebo cache files
