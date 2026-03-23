@@ -369,6 +369,11 @@ private:
 
     {
       std::lock_guard<std::mutex> lock(controller_mutex_);
+      const bool xy_enable_rising_edge =
+        axis_enable_xy_changed && !enable_control_xy_ && next_enable_control_xy;
+      const bool yaw_enable_rising_edge =
+        axis_enable_yaw_changed && !enable_control_yaw_ && next_enable_control_yaw;
+
       if (controller_type_changed) {
         controller_type_ = next_controller_type;
         controller_ = make_controller(controller_type_);
@@ -414,6 +419,17 @@ private:
       }
       if (xy_command_swap_changed) {
         xy_command_swap_ = next_xy_command_swap;
+      }
+      if (controller_type_ == "lqi") {
+        auto * lqi_controller = dynamic_cast<LQIController *>(controller_.get());
+        if (lqi_controller) {
+          if (xy_enable_rising_edge) {
+            lqi_controller->reset_xy_integrators();
+          }
+          if (yaw_enable_rising_edge) {
+            lqi_controller->reset_yaw_integrator();
+          }
+        }
       }
       if (axis_enable_xy_changed) {
         enable_control_xy_ = next_enable_control_xy;
@@ -470,6 +486,9 @@ private:
         get_logger(),
         "Axis control enable updated: XY=%s",
         enable_control_xy_ ? "true" : "false");
+      if (enable_control_xy_ && controller_type_ == "lqi") {
+        RCLCPP_INFO(get_logger(), "LQI XY integrators reset on XY enable.");
+      }
     }
     if (axis_enable_z_changed) {
       RCLCPP_INFO(
@@ -482,6 +501,9 @@ private:
         get_logger(),
         "Axis control enable updated: YAW=%s",
         enable_control_yaw_ ? "true" : "false");
+      if (enable_control_yaw_ && controller_type_ == "lqi") {
+        RCLCPP_INFO(get_logger(), "LQI yaw integrator reset on yaw enable.");
+      }
     }
     if (lqi_debug_csv_enabled_changed) {
       RCLCPP_INFO(
@@ -500,7 +522,12 @@ private:
         }
       }
     }
-    if (lqi_config_changed) {
+    if (
+      lqi_config_changed || reference_yaw_unit_changed || yaw_command_sign_changed ||
+      transform_world_xy_to_body_changed || xy_command_sign_x_changed ||
+      xy_command_sign_y_changed || xy_command_swap_changed ||
+      axis_enable_xy_changed || axis_enable_z_changed || axis_enable_yaw_changed)
+    {
       maybe_log_lqi_params_event("param_update", lqi_config_);
     }
 
@@ -762,6 +789,7 @@ private:
       << ",sat_cmd_x,sat_cmd_y,sat_cmd_z,sat_cmd_yaw"
       << ",aw_x_integrator_blocked,aw_y_integrator_blocked,aw_z_integrator_blocked,aw_yaw_integrator_blocked"
       << ",enable_control_xy,enable_control_z,enable_control_yaw"
+      << ",reference_yaw_in_degrees,yaw_command_sign,transform_world_xy_to_body,xy_command_sign_x,xy_command_sign_y,xy_command_swap"
       << ",lqi_cmd_xy_limit,lqi_cmd_z_limit,lqi_cmd_yaw_limit"
       << ",lqi_int_xy_limit,lqi_int_z_limit,lqi_int_yaw_limit"
       << ",lqi_trim_x,lqi_trim_y,lqi_trim_z,lqi_trim_yaw"
@@ -847,6 +875,8 @@ private:
       << ",mode"
       << ",design_dt"
       << ",control_sign"
+      << ",reference_yaw_in_degrees,yaw_command_sign,transform_world_xy_to_body,xy_command_sign_x,xy_command_sign_y,xy_command_swap"
+      << ",enable_control_xy,enable_control_z,enable_control_yaw"
       << ",gamma1,gamma2,gamma3,gamma4,gamma5,gamma6,gamma7,gamma8"
       << ",int_xy_limit,int_z_limit,int_yaw_limit"
       << ",cmd_xy_limit,cmd_z_limit,cmd_yaw_limit"
@@ -883,6 +913,15 @@ private:
                                 << "," << cfg.mode
                                 << "," << cfg.design_dt
                                 << "," << cfg.control_sign
+                                << "," << (reference_yaw_in_degrees_ ? 1 : 0)
+                                << "," << yaw_command_sign_
+                                << "," << (transform_world_xy_to_body_ ? 1 : 0)
+                                << "," << xy_command_sign_x_
+                                << "," << xy_command_sign_y_
+                                << "," << (xy_command_swap_ ? 1 : 0)
+                                << "," << (enable_control_xy_ ? 1 : 0)
+                                << "," << (enable_control_z_ ? 1 : 0)
+                                << "," << (enable_control_yaw_ ? 1 : 0)
                                 << "," << cfg.gamma1
                                 << "," << cfg.gamma2
                                 << "," << cfg.gamma3
@@ -1028,6 +1067,12 @@ private:
                         << "," << (enable_control_xy_ ? 1 : 0)
                         << "," << (enable_control_z_ ? 1 : 0)
                         << "," << (enable_control_yaw_ ? 1 : 0)
+                        << "," << (reference_yaw_in_degrees_ ? 1 : 0)
+                        << "," << yaw_command_sign_
+                        << "," << (transform_world_xy_to_body_ ? 1 : 0)
+                        << "," << xy_command_sign_x_
+                        << "," << xy_command_sign_y_
+                        << "," << (xy_command_swap_ ? 1 : 0)
                         << "," << lqi_config_.cmd_xy_limit
                         << "," << lqi_config_.cmd_z_limit
                         << "," << lqi_config_.cmd_yaw_limit

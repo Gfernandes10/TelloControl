@@ -151,6 +151,8 @@ public:
 
   std::string name() const override;
   void reset() override;
+  void reset_xy_integrators();
+  void reset_yaw_integrator();
   void set_config(const LQIConfig & config);
   LQIConfig get_config() const;
   LQIDebugSnapshot get_last_debug_snapshot() const;

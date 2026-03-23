@@ -25,6 +25,17 @@ void LQIController::reset()
   has_last_compute_time_ = false;
 }
 
+void LQIController::reset_xy_integrators()
+{
+  int_ex_ = 0.0;
+  int_ey_ = 0.0;
+}
+
+void LQIController::reset_yaw_integrator()
+{
+  int_eyaw_ = 0.0;
+}
+
 void LQIController::set_config(const LQIConfig & config)
 {
   config_ = config;
